@@ -26,7 +26,7 @@ all ObjectIDs are unique even if a couple of writes happen under a set of condit
 ## Reading Documents
 
 ```javascript
-> db.movieDetails.find({ reated: "PG-13" }).pretty()
+> db.movieDetails.find({ rated: "PG-13" }).pretty()
 ```
 In this example, we're querying on a single field and specifying that we want to see only documents rated PG-13.
  > Use `.count()` to see the number of documents matching the query
@@ -53,7 +53,7 @@ while on the `rated: "PG-13"` example I can leave the quotes around the key, but
 > db.movieDetails.find({ "writers": ["Ethan Coen", "Joel Coen"] }).count()
 ```
 
-In this example, our search is going to indentify documents by an exact match to an array of one or more values. For these types of queries, the order of elements matter. Meaning that I will only match documents that have Ethan Coen followed by Joel Coen.
+In this example, our search is going to identify documents by an exact match to an array of one or more values. For these types of queries, the order of elements matter. Meaning that I will only match documents that have Ethan Coen followed by Joel Coen.
 
 It's more common that we match documents for which a single element of the array matches selectors in our query:
 
@@ -128,3 +128,4 @@ _id in return documents, I need to explicitly exclude it and I can do that by si
 ### Comparison Operators
 
 Check `comparisonOperators.js` for code with comments. More on the [docs](https://docs.mongodb.com/manual/reference/operator/query/).
+
