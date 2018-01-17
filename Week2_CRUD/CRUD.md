@@ -2,7 +2,7 @@
 
 For creating documents we have `insertOne()` and `insertMany()` and. These are the two principal commands for creating documents in MongoDB. 
 
-## The `_id` field
+### The `_id` field
 
 MongoDB, if we don't supply one, creates an `_id` field by
 default. All collections have a unique primary index on the `_id` field. 
@@ -124,3 +124,7 @@ _id in return documents, I need to explicitly exclude it and I can do that by si
 ```javascript
 > db.movieDetails.find({ rated: "PG" }, { title: 1, _id: 0 }).pretty()
 ``` 
+
+### Comparison Operators
+
+Check `comparisonOperators.js` for code with comments. More on the [docs](https://docs.mongodb.com/manual/reference/operator/query/).
