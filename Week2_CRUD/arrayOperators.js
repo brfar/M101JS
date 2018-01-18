@@ -36,7 +36,7 @@ db.movieDetails.find({
 db.movieDetails.find({
 	boxOffice: {
 		$elemMatch: {
-			country: 'UK', // Return movies from the UK in which the revenue is greater than 15!
+			country: 'UK', // Return movies from the UK in which the revenue is greater than 15!!
 			revenue: { $gt: 15 }
 		}
 	}
