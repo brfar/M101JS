@@ -129,3 +129,14 @@ _id in return documents, I need to explicitly exclude it and I can do that by si
 
 Check `comparisonOperators.js` for code with comments. More on the [docs](https://docs.mongodb.com/manual/reference/operator/query/).
 
+## Updating Documents
+
+MongoDB provides three different update commands: they are `updateOne`, `updateMany` and `replaceOne`
+
+```javascript
+db.movieDetails.updateOne({ title: "The Martian"}, { $set: { poster: "http://ia.media-imdb.com/images/M/MV5BMTc2MTQ3MDA1Nl5BMl5BanBnXkFtZTgwODA3OTI4NjE@._V1_SX300.jpg" }});
+```
+
+The first argument on `updateOne` is a filter (or selector) document. Here it's `{ title: "The Martian" }`. This will identify the document we want to update. The way `updateOne` works is it will simply update the first document matching our selectors. In an application we'd be using a unique identifier such as the _id.
+
+The second argument to `updateOne` is where we specify how we would like to update the document. You must apply an update operator of some kind. In this case we're using the `$set` operator. This operator takes a document as an argument, and it's expecting a document that has a number of fields specified. What it will do is update the document matching the filter such that all key value pairs are reflected in the new version of the document that's created. In this case we're going to add a "poster" field and supply this URL as the value for that field. If there was an existing poster field this would modify its value to the URL specified.
