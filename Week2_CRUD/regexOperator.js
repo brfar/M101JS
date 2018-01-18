@@ -1,7 +1,7 @@
 db.movieDetails
 	.find({
 		'awards.text': {
-			$regex: /^Won\s.*/ // Return all documents where award.text begins with "Won "
+			$regex: /^Won\s.*/ // Return all documents where award.text begins with "Won ".
 		}
 	})
 	.pretty();
@@ -10,7 +10,7 @@ db.movieDetails
 	.find(
 		{
 			'awards.text': {
-				$regex: /^Won.*/
+				$regex: /^Won.*/ 
 			}
 		},
 		{

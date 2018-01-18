@@ -8,6 +8,6 @@ db.movieDetails
 db.movieDetails
 	.find({
 		$and: [{ metacritic: { $ne: null } }, { metacritic: { $exists: true } }]
-		// Return movies where the metacritic field is NOT equal to null AND where it exists.
+		// Return movies where the metacritic field is NOT equal to null AND where it exists..
 	})
 	.pretty();

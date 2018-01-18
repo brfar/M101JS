@@ -15,7 +15,7 @@ db.movieDetails
 			}
 		},
 		{
-			title: 1, // Show the title
+			title: 1, // Show the title..
 			runtime: 1, // Show runtime
 			_id: 0 // Hide _id
 		}

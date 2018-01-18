@@ -2,7 +2,7 @@
 to the database. By default insertMany does and ordered insert so it'll add the first and second object, when it sees the repeated
 _id on the third object, it'll stop inserting and throw an error. 
 If we want the app to keep going if it encounters an error, we should add a second argument to insertMany as shown on line 40.
-This command make sure MongoDB keep inserting the rest of the documents even if it encounters an error.
+This command make sure MongoDB keep inserting the rest of the documents even if it encounters an error..
 */
 
 db.moviesScratch.insertMany(

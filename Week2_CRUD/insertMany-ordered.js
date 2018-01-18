@@ -1,5 +1,5 @@
 /* No errors would happen here since we let MongoDB handle the _id property. There could be duplicate data, but the _id would
-be unique, so technically there's no errors. */
+be unique, so technically there's no errors.. */
 
 db.moviesScratch.insertMany([
 	{

@@ -3,7 +3,7 @@
     "title" : "Toy Story 3",
     "year" : 2010,
     "rated" : "G",
-    "released" : ISODate("2010-06-18T04:00:00Z"),
+    "released" : ISODate("2010-06-18T03:00:00Z"),
     "runtime" : 103,
     "countries" : [
 	"USA"

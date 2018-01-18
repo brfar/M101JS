@@ -1,6 +1,6 @@
 db.movieDetails.find({
 	'tomato.meter': {
-		$exists: true // Return only the documents where the 'tomato.meter' DOES exist.
+		$exists: true // Return only the documents where the 'tomato.meter' DOES exist..
 	}
 });
 
