@@ -185,7 +185,7 @@ db.movieDetails.updateMany({
     that I've listed in the document that I specify as $unset value
     and will remove them from all the matching docs. */
     rated: "" /* This value doesn't really matter I just tend to use 
-    an empty string */
+    an empty string. */
   }
 })
 
