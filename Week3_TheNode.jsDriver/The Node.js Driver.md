@@ -98,4 +98,15 @@ Projection allows us to explicitly include or exclude fields. We use 1 to indica
 `cursor` is chaining some methods on `db`: `collection` specifies which database collection we're pulling data from. `find` specifies what exactly we're looking for, and `projection` specifies which fields from the query we wanna show.
 The call to `find` will be synchronous. It won't actually go and fetch documents from the database. Rather, it'll simply immediately return a
 cursor to us. We're going to modify that cursor with a field projection, using the `project` method on cursors and then we're going to call `forEach` on the cursor, passing 2 callbacks: one to iterate though the returned documents, and another callback to be called if there's an error or when we've exhausted the cursor.
+
 🔥 What's important to realize is that there is a performance advantage, in that we're only sending over the wire and using network bandwidth for data that we actually need. This is a factor that can have a sizeable performance impact especially when there are thousands of clients making requests to our database. By projecting out just the fields we need, responses will require less time to assemble on the database side, less time to transmit to clients, and less time to process within those clients 🔥
+
+___
+
+### Query Operators in the Node.js Driver
+
+[Check app.js](/queryOperatorsInNodeJSDriver/app.js)
+
+___
+
+### to
