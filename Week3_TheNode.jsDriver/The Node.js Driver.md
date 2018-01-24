@@ -105,7 +105,7 @@ ___
 
 ### Query Operators in the Node.js Driver
 
-[Check app.js](/queryOperatorsInNodeJSDriver/app.js)
+Check /queryOperatorsInNodeJSDriver/
 
 ___
 
