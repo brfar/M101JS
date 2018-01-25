@@ -16,18 +16,18 @@ var options = commandLineOptions();
 
 MongoClient.connect('mongodb://localhost:27017/crunchbase', (err, db) => {
   assert.equal(err, null);
-  console.log('Successfully connected to MongoDB.');
+  console.log("Successfully connected to MongoDB.");
 
   var query = queryDocument(options);
   var projection = {
-    _id: 1,
-    name: 1,
-    founded_year: 1,
-    number_of_employees: 1,
-    crunchbase_url: 1
+    "_id": 1,
+    "name": 1,
+    "founded_year": 1,
+    "number_of_employees": 1,
+    "crunchbase_url": 1
   };
 
-  var cursor = db.collection('companies').find(query, projection);
+  var cursor = db.collection("companies").find(query, projection);
   var numMatches = 0; // Counter
 
   cursor.forEach(
@@ -37,49 +37,49 @@ MongoClient.connect('mongodb://localhost:27017/crunchbase', (err, db) => {
     },
     err => {
       assert.equal(err, null);
-      console.log('Our query was:' + JSON.stringify(query));
-      console.log('Matching documents: ' + numMatches);
+      console.log("Our query was:" + JSON.stringify(query));
+      console.log("Matching documents: " + numMatches);
       return db.close(); // Close the database and exit the program
     }
   );
 });
 
-function queryDocument(options) { // 'options' is what we've typed on the command line
+function queryDocument(options) { // "options" is what we've typed on the command line
   console.log(options);
 
   var query = {
-    founded_year: { // Das a property on the objects in the database
-      $gte: options.firstYear, // Years greater/equal 
-      $lte: options.lastYear // Years less/equal
+    "founded_year": { // Das a property on the objects in the database
+      "$gte": options.firstYear, // Years greater/equal 
+      "$lte": options.lastYear // Years less/equal
     },
     /**
-     * The 'if' below could've been included here as:
+     * The "if" below could've been included here as:
      * "number_of_employees" : options.employees
      * It's just a different syntax.
      */
   };
 
-  if ('employees' in options) query.number_of_employees = { $gte: options.employees };
+  if ("employees" in options) query.number_of_employees = { $gte: options.employees };
 
   return query;
 }
 
 function commandLineOptions() {
   var cli = commandLineArgs([
-    { name: 'firstYear', alias: 'f', type: Number },
-    { name: 'lastYear', alias: 'l', type: Number },
-    { name: 'employees', alias: 'e', type: Number }
+    { name: "firstYear", alias: "f", type: Number },
+    { name: "lastYear", alias: "l", type: Number },
+    { name: "employees", alias: "e", type: Number }
   ]);
 
-  /** The variable 'cli' is a constructor and it creates a cli object with a "parse" method. 
+  /** The variable "cli" is a constructor and it creates a cli object with a "parse" method. 
    * That parse method then will parse everything that we've typed in on the command line. We're 
    * storing that returned object on the 'options' variable below: */
   var options = cli.parse();
-  if (!('firstYear' in options && 'lastYear' in options)) { // If the user didn't type firstYear AND lastYear:
+  if (!("firstYear" in options && "lastYear" in options)) { // If the user didn't type firstYear AND lastYear:
     console.log(cli.getUsage({
-        title: 'Usage',
+        title: "Usage",
         description:
-          'The first two options below are required. The rest are optional.'
+          "The first two options below are required. The rest are optional."
     }));
     process.exit();
   }

@@ -109,4 +109,62 @@ Check /queryOperatorsInNodeJSDriver/
 
 ___
 
-### to
+### `sort`, `skip` and `limit` in the Node.js Driver
+
+When we're retrieving documents from a MongoDB collection it's often the case that we would like the database to support us in paging through the results.
+
+```javascript
+// from app-sort.js
+var cursor = db
+  .collection('companies')
+  .find(query)
+  .project(projection)
+  .sort([['founded_year', 1], ['number_of_employees', -1]]);
+  ```
+By running
+
+```
+$ node app-sort.js -f 2006 -l 2009 -e 100
+```
+
+`cursor` will go to the 'companies' collection, find the `query` variable, project some document and will **sort** the results in *ascending order* for 'founded_year' and *descending order* for 'number\_of\_employees' 
+
+🗣️ It's still the case that not until we call the `forEach` *(app-sort.js line 20)* that the driver actually says, "oh I better go get some documents from the database". Instead, it's building up its representation of our query in this cursor object as we make additional cursor method calls, adding additional detail to the command that we do eventually want to issue to the database.
+
+Initially, for sorting 1 property only, we use a object `.sort({founded_year: -1});` but in the example above we're using an array. The reason for that is because the order in which these sorts are applied is important. We want to sort first by founded year in ascending order and then within each year sort by number of employees, and we want to do that in descending order.
+
+The problem we run into if we try to pass an object, is that **it's possible that the fields will be reordered**. There is no guarantee of order of fields for JavaScript objects, but the order of array elements is guaranteed. So if I want to make sure that I sort first by founded year and then by number of employees, the Node.js driver allows me to pass an array to sort.
+
+#### Let's talk about `skip` and `limit`
+
+Here is an extended version of the code above:
+
+```javascript
+var cursor = db
+  .collection("companies")
+  .find(query)
+  .project(projection)
+  .limit(options.limit)
+  .skip(options.skip)
+  .sort([["founded_year", 1], ["number_of_employees", -1]]);
+```
+
+Skip and Limit are also cursor methods and, as with project and sort they merely modify the description of the operation that we want to execute against the database.
+
+Calling skip and calling limit **do not** force a call to the database.
+
+It's only when we call `forEach` that we'll send the details to the database complete with the query, the projection, the sort, how many search results to skip and to what size we'd like to limit our results set.  
+
+Running:
+```
+$ node app-sortSkipLimit.js -f 2006 -l 2009 -e 250 --limit 10 --skip 0
+```
+
+We set limit to 10, so only 10 results will be shown. We set skip to 0, so nothing will be skipped. If we run that again changing skip to 10, we'll skip the first 10 results, which is exactly the first 10 ones shown. Running it again, changing skip to 20, we'll show 10 documents skipping the first 20. You get the fucking idea. 
+
+You do a search to Amazon, you see 10 results on a page, and then in order to see results beyond that first page of results you click a
+Next button. On the back end what's happening is the application is actually submitting another query to the database-- same query, just skip the first 10 if that's how many we have on the page. That's what we're doing here.
+
+___
+
+### ~
