@@ -4,56 +4,56 @@ var { MongoClient } = require('mongodb');
 var assert = require('assert');
 
 var allOptions = [
-	{
-		overview: "wiki",
-	},
-	{
-		milestones: "CMO"
-	}
+  {
+    overview: "wiki",
+  },
+  {
+    milestones: "CMO"
+  }
 ];
 
 var numQueriesFinished = 0;
 var companiesSeen = {};
 
 for (var i = 0; i < allOptions.length; i++) {
-	var query = queryDocument(allOptions[i]);
-	queryMongoDB(query, i);
+  var query = queryDocument(allOptions[i]);
+  queryMongoDB(query, i);
 }
 
 function queryMongoDB(query, queryNum) {
-	MongoClient.connect('mongodb://localhost:27017/crunchbase', function(err, db) {
-		assert.equal(err, null);
-		console.log("Successfully connected to MongoDB for query: " + queryNum);
+  MongoClient.connect('mongodb://localhost:27017/crunchbase', function(err, db) {
+    assert.equal(err, null);
+    console.log("Successfully connected to MongoDB for query: " + queryNum);
 
-		var cursor = db.collection('companies').find(query);
+    var cursor = db.collection('companies').find(query);
 
-		var numMatches = 0;
+    var numMatches = 0;
 
-		cursor.forEach(
-			function(doc) {
-				numMatches = numMatches + 1;
-				if (doc.permalink in companiesSeen) return;
-				companiesSeen[doc.permalink] = doc;
-			},
-			function(err) {
-				assert.equal(err, null);
-				console.log("Query " + queryNum + " was:" + JSON.stringify(query));
-				console.log("Matching documents: " + numMatches);
-				numQueriesFinished = numQueriesFinished + 1;
-				if (numQueriesFinished == allOptions.length) {
-					report();
-				}
-				return db.close();
-			}
-		);
-	});
+    cursor.forEach(
+      function(doc) {
+        numMatches = numMatches + 1;
+        if (doc.permalink in companiesSeen) return;
+        companiesSeen[doc.permalink] = doc;
+      },
+      function(err) {
+        assert.equal(err, null);
+        console.log("Query " + queryNum + " was:" + JSON.stringify(query));
+        console.log("Matching documents: " + numMatches);
+        numQueriesFinished = numQueriesFinished + 1;
+        if (numQueriesFinished == allOptions.length) {
+          report();
+        }
+        return db.close();
+      }
+    );
+  });
 }
 
 function queryDocument(options) {
-	var query = {};
+  var query = {};
 
-	if ("overview" in options) {
-		/*
+  if ("overview" in options) {
+    /*
  TODO: Write an assignment statement to ensure that if "overview" appears in the 
  options object, we will match documents that have the value of options.overview 
  in either the "overview" field or "tag_list" field of companies documents.
@@ -67,41 +67,41 @@ function queryDocument(options) {
  I urge you to test your query in the Mongo shell first and adapt it to fit
  the syntax for constructing query documents in this application.
 */
-		query = {
-			$or: [
-				{
-					tag_list: {
-						$regex: options.overview,
-						$options: "i"
-					}
-				},
-				{
-					overview: {
-						$regex: options.overview,
-						$options: "i"
-					}
-				}
-			]
-		};
-	}
+    query = {
+      $or: [
+        {
+          tag_list: {
+            $regex: options.overview,
+            $options: "i"
+          }
+        },
+        {
+          overview: {
+            $regex: options.overview,
+            $options: "i"
+          }
+        }
+      ]
+    };
+  }
 
-	if ("milestones" in options) {
+  if ("milestones" in options) {
     query["milestones.source_description"] = 
     {"$regex": options.milestones, "$options": "i"};
-	}
+  }
 
-	return query;
+  return query;
 }
 
 function report(options) {
-	var totalEmployees = 0;
-	for (key in companiesSeen) {
-		totalEmployees = totalEmployees + companiesSeen[key].number_of_employees;
-	}
+  var totalEmployees = 0;
+  for (key in companiesSeen) {
+    totalEmployees = totalEmployees + companiesSeen[key].number_of_employees;
+  }
 
-	var companiesList = Object.keys(companiesSeen).sort();
-	console.log("Companies found: " + companiesList);
-	console.log("Total employees in companies identified: " + totalEmployees);
-	console.log("Total unique companies: " + companiesList.length);
-	console.log("Average number of employees per company: " + Math.floor(totalEmployees / companiesList.length));
+  var companiesList = Object.keys(companiesSeen).sort();
+  console.log("Companies found: " + companiesList);
+  console.log("Total employees in companies identified: " + totalEmployees);
+  console.log("Total unique companies: " + companiesList.length);
+  console.log("Average number of employees per company: " + Math.floor(totalEmployees / companiesList.length));
 }
